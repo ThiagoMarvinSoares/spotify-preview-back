@@ -40,7 +40,7 @@ def accessToken():
 @app.route("/1", methods=['GET','POST'])
 def artistData():
     
-    #Made global to be acceceble inside the function
+    #Made global to be accessible inside the function
     global accessTokenInfo
     
     #Header passing the auth type with the token retrieved
