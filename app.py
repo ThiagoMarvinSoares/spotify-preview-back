@@ -37,7 +37,7 @@ def accessToken():
         return jsonify({'error': response.text}), response.status_code
 
 #Function that print the artist data
-@app.route("/1", methods=['GET','POST'])
+@app.route("/1", methods=['GET'])
 def artistData():
     
     #Made global to be accessible inside the function
@@ -48,12 +48,16 @@ def artistData():
         "Authorization": f"Bearer {accessTokenInfo}" 
     }
     
-    #response passing the method + url with the artists ID
-    artistID = 'https://api.spotify.com/v1/artists/3qm84nBOXUEQ2vnTfUTTFC'
+    #Getting playlist info
+    playlistID = 'https://api.spotify.com/v1/playlists/37i9dQZF1DZ06evO2k3tf2'
+    playlistResponse = requests.get(playlistID, headers=headers)
+    
+    #Response passing the method + url with the artists ID
+    artistID = 'https://api.spotify.com/v1/artists/3YQKmKGau1PzlVlkL1iodx'
     response = requests.get(artistID, headers=headers)
     
     #Cheking status code + returning a json with the band data
     if response.status_code == 200:
-        return jsonify(response.json())
+        return jsonify(response.json(), playlistResponse.json())
     else:
         return jsonify({'error': response.text}), response.status_code
