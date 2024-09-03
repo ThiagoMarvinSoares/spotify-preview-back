@@ -11,7 +11,7 @@ urlToken = 'https://accounts.spotify.com/api/token'
 accessTokenInfo = ""
 
 #Requesting the token to make request to the API
-@app.route("/", methods = ['POST', 'GET'])
+@app.route("/accessToken", methods = ['POST', 'GET'])
 def accessToken():
     global accessTokenInfo
     
@@ -32,28 +32,6 @@ def accessToken():
     if response.status_code == 200:
         response_data = response.json()
         accessTokenInfo = response_data.get("access_token")
-        return accessTokenInfo
-    else:
-        return jsonify({'error': response.text}), response.status_code
-
-#Function that print the artist data
-@app.route("/1", methods=['GET','POST'])
-def artistData():
-    
-    #Made global to be accessible inside the function
-    global accessTokenInfo
-    
-    #Header passing the auth type with the token retrieved
-    headers = {
-        "Authorization": f"Bearer {accessTokenInfo}" 
-    }
-    
-    #response passing the method + url with the artists ID
-    artistID = 'https://api.spotify.com/v1/artists/3qm84nBOXUEQ2vnTfUTTFC'
-    response = requests.get(artistID, headers=headers)
-    
-    #Cheking status code + returning a json with the band data
-    if response.status_code == 200:
-        return jsonify(response.json())
+        return jsonify(accessTokenInfo)
     else:
         return jsonify({'error': response.text}), response.status_code
