@@ -1,7 +1,9 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 import requests
 
 app = Flask(__name__)
+CORS(app)
 
 #Defining variables for access in the API
 clientID ='1d8753533ab74648ba0984010c594d4d'
