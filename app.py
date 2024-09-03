@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 import requests
 
 app = Flask(__name__)
@@ -8,9 +8,13 @@ clientID ='1d8753533ab74648ba0984010c594d4d'
 clientSecret = '89d92c67511b4851828cf4c4bf9acb36'
 urlToken = 'https://accounts.spotify.com/api/token'
 
+accessTokenInfo = ""
+
 #Requesting the token to make request to the API
-@app.route("/", methods = ['POST', 'GET'])
-def acessToken():
+@app.route("/accessToken", methods = ['POST', 'GET'])
+def accessToken():
+    global accessTokenInfo
+    
     headers = {
         "Content-Type": "application/x-www-form-urlencoded"
     }
@@ -27,7 +31,7 @@ def acessToken():
     #Checking if the server was able to get the access token for requests
     if response.status_code == 200:
         response_data = response.json()
-        access_token = response_data.get("access_token")
-        return response_data
+        accessTokenInfo = response_data.get("access_token")
+        return jsonify(accessTokenInfo)
     else:
-        return print(f'Failed to get:{response}')
+        return jsonify({'error': response.text}), response.status_code
